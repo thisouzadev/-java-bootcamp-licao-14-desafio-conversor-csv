@@ -1,8 +1,10 @@
 package com.trybe.conversorcsv;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 public class Conversor {
@@ -39,18 +41,29 @@ public class Conversor {
 
     FileReader leitorArquivo = null;
     BufferedReader bufferedLeitor = null;
+
+    FileWriter escritorArquivo = null;
+    BufferedWriter bufferedEscritor = null;
+
     for (File file : pastaDeEntradas.listFiles()) {
       leitorArquivo = new FileReader(file);
       bufferedLeitor = new BufferedReader(leitorArquivo);
 
       String conteudoLinha = bufferedLeitor.readLine();
+
+      File meuArquivo = new File(pastaDeSaidas, file.getName());
+      escritorArquivo = new FileWriter(meuArquivo);
+      bufferedEscritor = new BufferedWriter(escritorArquivo);
+
       while (conteudoLinha != null) {
-        System.out.println(conteudoLinha);
+        bufferedEscritor.write(conteudoLinha);
+        bufferedEscritor.newLine();
         conteudoLinha = bufferedLeitor.readLine();
       }
-      leitorArquivo.close();
-      bufferedLeitor.close();
-    }
+      bufferedEscritor.flush();
 
+    }
+    leitorArquivo.close();
+    bufferedLeitor.close();
   }
 }
