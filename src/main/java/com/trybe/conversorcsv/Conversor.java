@@ -56,14 +56,27 @@ public class Conversor {
       bufferedEscritor = new BufferedWriter(escritorArquivo);
 
       while (conteudoLinha != null) {
-        bufferedEscritor.write(conteudoLinha);
+        String[] conteudo = conteudoLinha.split(",");
+        if (conteudo[0].startsWith("Nome")) {
+          bufferedEscritor.write(conteudoLinha);
+          System.out.println(conteudoLinha);
+        } else {
+          String name = conteudo[0].toUpperCase();;
+          String data = conteudo[1].replaceAll("(\\d+)/(\\d+)/(\\d+)", "$3-$2-$1");
+          String email = conteudo[2];
+          String cpf = conteudo[3].replaceAll("(\\d{3})(\\d{3})(\\d{3})(\\d{2})", "$1.$2.$3-$4");
+          String formatado = name + "," + data + "," + email + "," + cpf;
+
+          bufferedEscritor.write(formatado);
+          System.out.println(formatado);
+        }
         bufferedEscritor.newLine();
         conteudoLinha = bufferedLeitor.readLine();
       }
       bufferedEscritor.flush();
+      leitorArquivo.close();
+      bufferedLeitor.close();
 
     }
-    leitorArquivo.close();
-    bufferedLeitor.close();
   }
 }
